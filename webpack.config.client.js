@@ -1,8 +1,5 @@
 ﻿const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const CssHotLoader = require("css-hot-loader");
 var autoprefixer = require('autoprefixer');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -19,7 +16,6 @@ module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
     const isBundle = env && env.bundle;
     const isHot = env && env.hot;
-    const clientBundleOutputDir = './dist';
 
     const config = {
         devServer: {

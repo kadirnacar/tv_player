@@ -6,6 +6,7 @@ import { fetchReq } from '../Utils';
 
 export interface EditorState {
     JsonData: any;
+    ReadUrl: any;
 }
 
 export interface RequestAction {
@@ -16,8 +17,12 @@ export interface ReceiveAction {
     type: 'RECEIVE_EDITOR';
     Data: any[];
 }
+export interface ReceiveUrlAction {
+    type: 'RECEIVE_URLEDITOR';
+    Data: any[];
+}
 
-export type KnownAction = RequestAction | ReceiveAction;
+export type KnownAction = RequestAction | ReceiveAction | ReceiveUrlAction;
 
 export const actionCreators = {
     getJson: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -25,6 +30,17 @@ export const actionCreators = {
         let fetchTask = fetchReq(`${config.restUrl}/api/channels/json`, 'GET')
             .then((data) => {
                 dispatch({ type: 'RECEIVE_EDITOR', Data: data });
+            });
+
+        addTask(fetchTask);
+        dispatch({ type: 'REQUEST_EDITOR' });
+        return fetchTask;
+    },
+    readJson: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
+
+        let fetchTask = fetchReq(`${config.restUrl}/api/channels/read`, 'GET')
+            .then((data) => {
+                dispatch({ type: 'RECEIVE_URLEDITOR', Data: data });
             });
 
         addTask(fetchTask);
@@ -46,18 +62,25 @@ export const actionCreators = {
     }
 };
 
-const unloadedState: EditorState = { JsonData: {} };
+const unloadedState: EditorState = { JsonData: {}, ReadUrl: {} };
 
 export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction: Action) => {
     const action = incomingAction as KnownAction;
     switch (action.type) {
         case 'REQUEST_EDITOR':
             return {
-                JsonData: state.JsonData
+                JsonData: state.JsonData,
+                ReadUrl: state.ReadUrl
             };
         case 'RECEIVE_EDITOR':
             return {
-                JsonData: action.Data
+                JsonData: action.Data,
+                ReadUrl: state.ReadUrl
+            };
+        case 'RECEIVE_URLEDITOR':
+            return {
+                JsonData: action.Data,
+                ReadUrl: action.Data
             };
     }
 

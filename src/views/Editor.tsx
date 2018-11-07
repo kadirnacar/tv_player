@@ -33,6 +33,12 @@ class Editor extends React.Component<any, any>{
         }, 300);
     }
 
+    getUrl() {
+        this.props.readJson().then(() => {
+            // this.editor.editor.getAction('editor.action.formatDocument').run();
+        });     
+    }
+
     editor: any;
     render() {
         const options = {
@@ -45,8 +51,9 @@ class Editor extends React.Component<any, any>{
                     <ButtonToolbar>
                         <ButtonGroup>
                             <Button color="success" onClick={() => { this.getData(); }}><i className="fa fa-home" /> Yenile</Button>
-                            <Button color="warning" onClick={() => {  this.editor.editor.getAction('editor.action.formatDocument').run(); }}><i className="fa fa-refresh" /> Format</Button>
+                            <Button color="warning" onClick={() => { this.editor.editor.getAction('editor.action.formatDocument').run(); }}><i className="fa fa-refresh" /> Format</Button>
                             <Button color="primary" onClick={() => { this.saveData(); }}><i className="fa fa-save" /> Kaydet</Button>
+                            <Button color="info" onClick={() => { this.getUrl(); }}><i className="fa fa-save" /> Url Al</Button>
                         </ButtonGroup>
 
                     </ButtonToolbar>

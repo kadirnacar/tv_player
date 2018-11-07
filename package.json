@@ -11,6 +11,7 @@
     "express-video": "^1.0.4",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
+    "jsdom": "^13.0.0",
     "lowdb": "^1.0.0",
     "monaco": "^1.201704190613.0",
     "prop-types": "^15.6.2",
@@ -24,9 +25,11 @@
     "react-router-redux": "^4.0.8",
     "reactstrap": "^6.3.1",
     "redux": "^4.0.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "request": "^2.88.0"
   },
   "devDependencies": {
+    "@types/jsdom": "^12.2.0",
     "@types/lowdb": "^1.0.5",
     "@types/react": "^16.4.7",
     "@types/react-dom": "^16.0.6",
@@ -68,8 +71,10 @@
     "write-file-webpack-plugin": "^4.3.2"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js  --profile --progress  --display-error-details --env.server",
-    "buildcli": "webpack --config webpack.config.js  --profile --watch --progress  --display-error-details --env.client"
+    "build": "webpack --config webpack.config.js  --watch --profile --progress  --display-error-details --env.server",
+    "watch": "webpack --config webpack.config.js  --profile --watch --progress  --display-error-details --env.client",
+    "buildcli": "webpack --config webpack.config.js  --profile --progress  --display-error-details --env.client",
+    "start": "npm run build && npm run buildcli && node ./dist/main.js"
   },
   "author": "",
   "license": "ISC"
