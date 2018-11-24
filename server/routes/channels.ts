@@ -88,7 +88,8 @@ export class ChannelsRouter {
                         var re = new RegExp(element.urlRegex, "gi");
                         var frameContent = a.target["contentDocument"].body.innerHTML;
                         url = frameContent.match(re);
-                        element.url = url[0];
+                        if (url)
+                            element.url = url[0];
                         c = true;
                         resolve();
                     })
@@ -96,7 +97,8 @@ export class ChannelsRouter {
                     var content = data["window"].document.body.innerHTML;
                     var re = new RegExp(element.urlRegex, "gi");
                     url = content.match(re);
-                    element.url = url[0];
+                    if (url)
+                        element.url = url[0];
                     resolve();
                 }
             })

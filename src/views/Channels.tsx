@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Col, Container, ListGroup, ListGroupItem, Row } from 'reactstrap';
 import CNavbar from '../containers/App/navbar';
 import * as ChannelState from '../reducers/channels';
+import * as EditorState from '../reducers/editor';
 import { ApplicationState } from '../store';
 
 class Channels extends React.Component<any, any>{
@@ -21,7 +22,15 @@ class Channels extends React.Component<any, any>{
         this.setState({ active: item });
     }
     componentDidMount() {
+        console.log(this.props)
         this.props.getChannels();
+    }
+    refreshUrl() {
+        this.props.readJson().then(() => {
+            this.props.getChannels();
+
+            // this.editor.editor.getAction('editor.action.formatDocument').run();
+        });
     }
     render() {
         return <Container fluid tabIndex={0}>
@@ -31,6 +40,8 @@ class Channels extends React.Component<any, any>{
             <Row>
                 <Col xs="3">
                     <ListGroup>
+                        <ListGroupItem
+                            onClick={() => { this.refreshUrl();}} tag="button" action>Url Yenile</ListGroupItem>
                         {
                             this.props.Data ? this.props.Data.map((item, index) => <ListGroupItem key={index} active={this.state.active == item.url}
                                 onClick={() => { this.setActive(item); }} tag="button" action>{item.name}</ListGroupItem>) : null
@@ -55,5 +66,5 @@ class Channels extends React.Component<any, any>{
 // export default Channels;
 export default connect(
     (state: ApplicationState) => state.Channels,
-    ChannelState.actionCreators
+    {  ...ChannelState.actionCreators, ...EditorState.actionCreators } 
 )(Channels);
