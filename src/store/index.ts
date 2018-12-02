@@ -1,5 +1,6 @@
 import { ChannelState, reducer as channelReducer } from '../reducers/channels';
 import { EditorState, reducer as editorReducer } from '../reducers/Editor';
+import {  reducer as toastrReducer } from '../reducers/toastr';
 
 export interface ApplicationState {
     session: any;
@@ -10,7 +11,8 @@ export interface ApplicationState {
 
 export const reducers = {
     Channels: channelReducer,
-    Editor: editorReducer
+    Editor: editorReducer,
+    toastr: toastrReducer
 };
 
 export interface AppThunkAction<TAction> {

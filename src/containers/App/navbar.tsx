@@ -6,7 +6,7 @@ class CNavbar extends React.Component<any, any>{
 
     render() {
         return <Navbar color="dark" dark expand="md">
-            <NavbarBrand href="/">Tv İzle</NavbarBrand>
+            <NavbarBrand tag={RNavLink} to="/">Tv İzle</NavbarBrand>
             <Nav className="ml-auto" navbar>
                 <NavItem>
                     <NavLink tag={RNavLink} to="/">Liste</NavLink>
