@@ -36,6 +36,10 @@ class Channels extends React.Component<any, any>{
     refreshUrl() {
         this.setState({ isrefresh: true })
         this.props.readJson().then(() => {
+            if (this.hls && this.hls.player && this.hls.player.player && this.hls.player.player.hls) {
+                this.hls.player.player.hls.destroy();
+                console.log("hls");
+            }
             this.props.getChannels();
             toastr.success("Url Refresh", "Success");
             this.setState({ isrefresh: false })
@@ -46,6 +50,10 @@ class Channels extends React.Component<any, any>{
         this.setState({ isrefresh: true })
 
         this.props.readUrlJson(name).then(() => {
+            if (this.hls && this.hls.player && this.hls.player.player && this.hls.player.player.hls) {
+                this.hls.player.player.hls.destroy();
+                console.log("hls");
+            }
             this.props.getChannels();
             toastr.success("Url Refresh", "Success");
             this.setState({ isrefresh: false })
