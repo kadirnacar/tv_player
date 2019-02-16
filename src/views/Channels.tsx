@@ -2,13 +2,13 @@ import * as React from 'react';
 import ReactHLS from 'react-hls';
 import ReactPlayer from 'react-player';
 import { connect } from 'react-redux';
-import { Col, Container, ListGroup, ListGroupItem, Row, Navbar, Nav, Button, NavItem, Input } from 'reactstrap';
+import { toastr } from 'react-redux-toastr';
+import { Button, Col, Container, Nav, Navbar, NavItem, Row } from 'reactstrap';
 import CNavbar from '../containers/App/navbar';
-import ChannelList from './ChannelList';
 import * as ChannelState from '../reducers/channels';
 import * as EditorState from '../reducers/editor';
 import { ApplicationState } from '../store';
-import { toastr } from 'react-redux-toastr';
+import ChannelList from './ChannelList';
 
 class Channels extends React.Component<any, any>{
     constructor(props) {
@@ -23,10 +23,15 @@ class Channels extends React.Component<any, any>{
         if (item.eval == true) {
             item.url = eval(item.evalurl);
         }
+        if (this.hls && this.hls.player && this.hls.player.player && this.hls.player.player.hls) {
+            this.hls.player.player.hls.destroy();
+            console.log("hls");
+        }
         this.setState({ active: item });
     }
     componentDidMount() {
         this.props.getChannels();
+        console.log(this.hls)
     }
     refreshUrl() {
         this.setState({ isrefresh: true })
@@ -37,10 +42,21 @@ class Channels extends React.Component<any, any>{
             // this.editor.editor.getAction('editor.action.formatDocument').run();
         });
     }
+    refreshAnUrl(name) {
+        this.setState({ isrefresh: true })
+
+        this.props.readUrlJson(name).then(() => {
+            this.props.getChannels();
+            toastr.success("Url Refresh", "Success");
+            this.setState({ isrefresh: false })
+            // this.editor.editor.getAction('editor.action.formatDocument').run();
+        });
+    }
     playerError(err) {
         console.log(err);
         toastr.error("Player error", err);
     }
+    hls: any;
     render() {
         return <Container fluid tabIndex={0}>
             <CNavbar />
@@ -57,13 +73,18 @@ class Channels extends React.Component<any, any>{
                             </NavItem>
                         </Nav>
                     </Navbar>
-                    <ChannelList data={this.props.Data} onChange={this.setActive.bind(this)} />
+                    <ChannelList onRefreshUrl={this.refreshAnUrl.bind(this)} data={this.props.Data} onChange={this.setActive.bind(this)} />
                 </Col>
                 <Col xs="9">
                     <div>
 
-                        {this.state.active ? this.state.active.type == 0 ? <ReactHLS url={this.state.active.url} autoplay={true} constrols={true} width="100%" height="100%" />
+                        {this.state.active ? this.state.active.type == 0 ?
+                            <ReactHLS
+                                url={this.state.active.url}
+                                autoplay={true}
+                                constrols={true} width="100%" height="100%" />
                             : <ReactPlayer onError={this.playerError.bind(this)}
+                                ref={(a) => { this.hls = a }}
                                 url={this.state.active.url} playing controls width="100%" height="100%" />
                             : null}
                     </div>

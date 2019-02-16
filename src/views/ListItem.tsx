@@ -79,8 +79,8 @@ class ListItem extends React.Component<any, any>{
                                     <Col sm={{ size: 10 }}>
                                         <FormGroup check>
                                             <Label check>
-                                                <Input type="checkbox" value={this.props.data.iframe}
-                                                    onChange={(e) => { this.props.data.iframe = e.target.value; this.setState({}); }} />
+                                                <Input type="checkbox" checked={this.props.data.iframe && this.props.data.iframe.toString() == "true"}
+                                                    onChange={(e) => { this.props.data.iframe = e.target.checked; this.setState({}); }} />
                                             </Label>
                                         </FormGroup>
                                     </Col>

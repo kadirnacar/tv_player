@@ -141,6 +141,27 @@ export class ChannelsRouter {
         const data2 = await this.readFile(this.filePath);
         res.status(200).send(JSON.stringify({ Channels: data }));
     }
+    public async readUrl(req, res, next) {
+        const name = req.params["name"];
+        const data = await this.db.get('Channels').value();
+        await new Promise(async (resolve) => {
+            for (var i = 0; i < data.length; i++) {
+                var element = data[i];
+                if (element.name == name) {
+                    if (element.type == 3) {
+                        var d = await this.getUrl(element);
+                        console.log(d);
+                    }
+                }
+            }
+
+            resolve();
+        })
+        await this.saveFile(this.filePath, JSON.stringify({ Channels: data }));
+
+        const data2 = await this.readFile(this.filePath);
+        res.status(200).send(JSON.stringify({ Channels: data }));
+    }
 
     async init() {
 
@@ -150,6 +171,7 @@ export class ChannelsRouter {
         this.router.get('/refresh', this.refresh.bind(this));
         this.router.get('/json', this.getJson.bind(this));
         this.router.get('/read', this.read.bind(this));
+        this.router.get('/readurl/:name', this.readUrl.bind(this));
         this.router.post('/json', this.saveJson.bind(this));
         this.router.get('/video/:id', this.videoFile.bind(this));
     }

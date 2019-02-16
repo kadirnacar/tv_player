@@ -47,6 +47,17 @@ export const actionCreators = {
         dispatch({ type: 'REQUEST_EDITOR' });
         return fetchTask;
     },
+    readUrlJson: (name): AppThunkAction<KnownAction> => (dispatch, getState) => {
+
+        let fetchTask = fetchReq(`${config.restUrl}/api/channels/readurl/${name}`, 'GET')
+            .then((data) => {
+                dispatch({ type: 'RECEIVE_URLEDITOR', Data: data });
+            });
+
+        addTask(fetchTask);
+        dispatch({ type: 'REQUEST_EDITOR' });
+        return fetchTask;
+    },
     saveJson: (data): AppThunkAction<KnownAction> => (dispatch, getState) => {
         const opts = {
             data: data

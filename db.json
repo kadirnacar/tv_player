@@ -1,1 +1,53 @@
-{"Channels":[{"type":0,"category":"Haber","name":"CNN Türk","url":"https://2122248074.dogannet.tv/S2/HLS_LIVE/cnnturknp/playlist.m3u8"},{"type":3,"category":"Haber","name":"Habertürk","pageUrl":"http://www.hdtvler.tv/haberturk-tv-canli-izle/","iframe":false,"urlRegex":"(?<=file: ')(.*?)(?=')","url":"https://hdtvler1.etvserver.com/live_hd/haberturk/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9MTIvMi8yMDE4IDc6MTI6MDYgUE0maGFzaF92YWx1ZT1VKzlPVVc5aG1FcDFONzJXbzByZWRRPT0mdmFsaWRtaW51dGVzPTU="},{"type":0,"category":"Haber","name":"NTV","url":"http://nt4p9nef.rocketcdn.com/ntvhd.stream_720p/chunklist.m3u8"},{"type":3,"category":"Genel","name":"Show TV","pageUrl":"http://www.hdtvler.tv/show-tv-canli-izle/","iframe":false,"urlRegex":"(?<=file: ')(.*?)(?=')","url":"https://hdtvler2.etvserver.com/live_sd/showtv/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9MTIvMi8yMDE4IDc6MTI6MDkgUE0maGFzaF92YWx1ZT1JL0xjU2FPaVF6aENjUm5KTUJlcG93PT0mdmFsaWRtaW51dGVzPTU="},{"type":3,"category":"Genel","name":"ATV","pageUrl":"http://www.hdtvler.tv/atv-canli-izle-tv/","iframe":false,"urlRegex":"(?<=file: ')(.*?)(?=')","url":"https://hdtvler1.etvserver.com/live_hd/atv/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9MTIvMi8yMDE4IDc6MTI6MTAgUE0maGFzaF92YWx1ZT1GQUprTWZFd1JkcmdFWjc3OHBnS0hRPT0mdmFsaWRtaW51dGVzPTU="},{"type":3,"category":"Genel","name":"TLC","pageUrl":"http://www.hdtvler.tv/tlc-tv-turkiye/","iframe":false,"urlRegex":"(?<=file: ')(.*?)(?=')","url":"https://pa9agxjg.rocketcdn.com/tlctv.smil/chunklist_b2328000_sltur.m3u8"}]}
+{
+    "Channels": [{
+        "type": 0,
+        "category": "Haber",
+        "name": "CNN Türk",
+        "url": "https://2122248074.dogannet.tv/S2/HLS_LIVE/cnnturknp/playlist.m3u8"
+    }, {
+        "type": 3,
+        "category": "Haber",
+        "name": "Habertürk",
+        "pageUrl": "https://www.ecanlitvizle.live/haberturk-canli-yayin/2/",
+        "iframe": true,
+        "urlRegex": "(?<=file: ')(.*?)(?=')",
+        "url": "https://ecanlitvizle1.etvserver.com/live_hd/haberturk/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Mi8xNi8yMDE5IDc6MDQ6MTAgUE0maGFzaF92YWx1ZT1VNjQxcFlESXd0MThNTUhpcWk4VmNRPT0mdmFsaWRtaW51dGVzPTEw"
+    }, {
+        "type": 0,
+        "category": "Haber",
+        "name": "NTV",
+        "url": "http://nt4p9nef.rocketcdn.com/ntvhd.stream_720p/chunklist.m3u8"
+    }, {
+        "type": 3,
+        "category": "Genel",
+        "name": "Show TV",
+        "pageUrl": "https://www.ecanlitvizle.live/show-tv-canli-yayin/3/",
+        "iframe": true,
+        "urlRegex": "(?<=file: ')(.*?)(?=')",
+        "url": "https://ecanlitvizle1.etvserver.com/live_sd/showtv/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Mi8xNi8yMDE5IDc6MDQ6MTEgUE0maGFzaF92YWx1ZT1hdHc5eEMyV0FtVExFeVJrbFQwaEd3PT0mdmFsaWRtaW51dGVzPTEw"
+    }, {
+        "type": 3,
+        "category": "Genel",
+        "name": "ATV",
+        "pageUrl": "https://www.ecanlitvizle.live/atv-canli-10/",
+        "iframe": true,
+        "urlRegex": "(?<=file: ')(.*?)(?=')",
+        "url": "https://trkvz-m.ercdn.net/trkvz-temp/atvhdm.m3u8?nimblesessionid=33044538&wmsAuthSign=c2VydmVyX3RpbWU9MTIvMjEvMjAxOCAzOjQ2OjUwIFBNJmhhc2hfdmFsdWU9TWd1cU5RSXFCVG1PMnNBb3dtVGFZUT09JnZhbGlkbWludXRlcz0xMA=="
+    }, {
+        "type": 3,
+        "category": "Genel",
+        "name": "TLC",
+        "pageUrl": "https://www.ecanlitvizle.live/tlc-tv/",
+        "iframe": true,
+        "urlRegex": "(?<=file: ')(.*?)(?=')",
+        "url": "https://pa9agxjg.rocketcdn.com/tlctv.smil/chunklist.m3u8"
+    }, {
+        "type": 3,
+        "category": "Genel",
+        "name": "Trt 1",
+        "pageUrl": "https://www.ecanlitvizle.live/trt-1-izle/",
+        "iframe": true,
+        "urlRegex": "(?<=file: ')(.*?)(?=')",
+        "url": "https://trtcanlitv-lh.akamaihd.net/i/TRT1HD_1@181842/master.m3u8"
+    }]
+}
