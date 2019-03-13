@@ -41,7 +41,7 @@ module.exports = (env) => {
         module: {
             rules: [{
                     test: /\.tsx?$/,
-                    include: [/src/, /dbmodels/],
+                    include: [/src/],
                     use: [{
                         loader: 'awesome-typescript-loader',
                         options: {
