@@ -5,7 +5,6 @@ var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlug
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var WriteFilePlugin = require('write-file-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 const vendorsExtractPlugin = new MiniCssExtractPlugin({
     filename: 'style.css',
@@ -182,7 +181,6 @@ module.exports = (env) => {
             // ]
         },
         plugins: [
-                new MonacoWebpackPlugin(),
                 vendorsExtractPlugin,
                 new WriteFilePlugin(),
                 // new webpack.NoEmitOnErrorsPlugin(),

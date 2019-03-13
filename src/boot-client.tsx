@@ -1,5 +1,4 @@
 import 'font-awesome/css/font-awesome.css';
-import 'monaco-editor/min/vs/editor/editor.main.css';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
@@ -8,6 +7,7 @@ import configureStore from './configureStore';
 import App from './containers/App';
 import history from './history';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
+import 'video.js/dist/video-js.css';
 
 const initialState = (window as any).initialReduxState;
 const store = configureStore(history, initialState);
