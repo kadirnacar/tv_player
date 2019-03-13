@@ -37,7 +37,6 @@ export const actionCreators = {
         };
         let fetchTask = fetchReq(`${config.restUrl}/api/channels/list`, 'GET')
             .then((data) => {
-                console.log(data);
                 dispatch({ type: 'RECEIVE_CHANNEL', Data: data });
             });
 

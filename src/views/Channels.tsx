@@ -16,22 +16,24 @@ class Channels extends React.Component<any, any>{
         this.state = {
             active: "",
             search: "",
-            isrefresh: false
+            isrefresh: false,
+            index: -1
         };
     }
-    setActive(item) {
-        if (item.eval == true) {
-            item.url = eval(item.evalurl);
-        }
-        if (this.hls && this.hls.player && this.hls.player.player && this.hls.player.player.hls) {
-            this.hls.player.player.hls.destroy();
-            console.log("hls");
-        }
-        this.setState({ active: item });
+    setActive(item, index) {
+        this.setState({ active: {} }, () => {
+            if (item.eval == true) {
+                item.url = eval(item.evalurl);
+            }
+            if (this.hls && this.hls.player && this.hls.player.player && this.hls.player.player.hls) {
+                this.hls.player.player.hls.destroy();
+            }
+            this.setState({ active: item, index });
+        });
+
     }
     componentDidMount() {
         this.props.getChannels();
-        console.log(this.hls)
     }
     refreshUrl() {
         this.setState({ isrefresh: true })
@@ -48,21 +50,29 @@ class Channels extends React.Component<any, any>{
     }
     refreshAnUrl(name) {
         this.setState({ isrefresh: true })
-
-        this.props.readUrlJson(name).then(() => {
-            if (this.hls && this.hls.player && this.hls.player.player && this.hls.player.player.hls) {
-                this.hls.player.player.hls.destroy();
-                console.log("hls");
-            }
-            this.props.getChannels();
-            toastr.success("Url Refresh", "Success");
-            this.setState({ isrefresh: false })
-            // this.editor.editor.getAction('editor.action.formatDocument').run();
+        return new Promise((resolve, reject) => {
+            this.props.readUrlJson(name).then(() => {
+                if (this.hls && this.hls.player && this.hls.player.player && this.hls.player.player.hls) {
+                    this.hls.player.player.hls.destroy();
+                }
+                this.props.getChannels();
+                toastr.success("Url Refresh", "Success");
+                this.setState({ isrefresh: false })
+                resolve();
+                // this.editor.editor.getAction('editor.action.formatDocument').run();
+            });
         });
+
     }
-    playerError(err) {
-        console.log(err);
-        toastr.error("Player error", err);
+    playerError(err, a) {
+        console.log(a, err, this);
+        // this.setActive({}, this.state.index)
+        if (a.type == "networkError") {
+            toastr.error("Player error", err);
+            this.refreshAnUrl(this.state.active.name).then(() => {
+                // this.setActive(this.props.Data[this.state.index], this.state.index);
+            });
+        }
     }
     hls: any;
     render() {
