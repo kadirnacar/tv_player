@@ -23,6 +23,9 @@ module.exports = {
         //     'node_modules'
         // ]
     },
+	externals: {
+		canvas: "commonjs canvas" // Important (2)
+	},
     entry: {
         'main': ['./server/index.ts'],
         // 'index': ['./src/boot-client.tsx']

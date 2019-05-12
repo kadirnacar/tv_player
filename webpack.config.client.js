@@ -1,21 +1,18 @@
 ﻿const path = require('path');
 const webpack = require('webpack');
-var autoprefixer = require('autoprefixer');
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-var HtmlWebpackPlugin = require("html-webpack-plugin");
-var WriteFilePlugin = require('write-file-webpack-plugin');
+const autoprefixer = require('autoprefixer');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WriteFilePlugin = require('write-file-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-const vendorsExtractPlugin = new MiniCssExtractPlugin({
-    filename: 'style.css',
-    allChunks: true
-});
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
     const isBundle = env && env.bundle;
     const isHot = env && env.hot;
-
+    const output = 'dist';
     const config = {
         devServer: {
             host: 'localhost',
@@ -46,68 +43,59 @@ module.exports = (env) => {
                         loader: 'awesome-typescript-loader',
                         options: {
                             silent: true,
-                            configFileName: './tsconfig.json',
                             useBabel: true,
+                            babelCore: "@babel/core",
                             babelOptions: {
                                 babelrc: false,
                                 presets: [
-                                    ["env", {
+                                    ["@babel/preset-env", {
                                         "targets": {
                                             "node": "current"
-                                        }
+                                        },
+                                        "modules": false
                                     }]
                                 ]
-                            },
-                        },
+                            }
+                        }
                     }]
                 },
                 {
-                    test: /\.css$/,
-
+                    test: /\.(sa|sc)ss$/,
                     use: [{
                             loader: MiniCssExtractPlugin.loader,
                             options: {
-                                sourceMap: isDevBuild,
-                                minimize: !isDevBuild
+                                hmr: isDevBuild
                             }
                         },
                         {
-                            loader: 'css-loader',
-                            options: {
-                                sourceMap: isDevBuild,
-                                minimize: !isDevBuild
-                            }
+                            loader: 'css-modules-typescript-loader'
                         },
+                        'css-loader',
                         {
                             loader: 'postcss-loader',
                             options: {
                                 plugins: () => [autoprefixer]
                             }
-                        }
+                        },
+                        'sass-loader'
                     ]
                 },
                 {
-                    test: /\.scss$/,
+                    test: /\.css$/,
                     use: [{
                             loader: MiniCssExtractPlugin.loader,
                             options: {
-                                sourceMap: isDevBuild,
-                                minimize: !isDevBuild
-                            }
-                        }, {
-                            loader: 'css-loader',
-                            options: {
-                                sourceMap: isDevBuild,
-                                minimize: !isDevBuild
+                                hmr: isDevBuild
                             }
                         },
+                        'css-loader',
                         {
                             loader: 'postcss-loader',
                             options: {
                                 plugins: () => [autoprefixer]
                             }
                         },
-                        "sass-loader"
+                        'sass-loader'
                     ]
                 },
                 {
@@ -146,12 +134,12 @@ module.exports = (env) => {
         optimization: {
             splitChunks: {
                 cacheGroups: {
-                    commons: {
-                        chunks: "initial",
-                        minChunks: 2,
-                        maxInitialRequests: 5, // The default limit is too small to showcase the effect
-                        minSize: 0 // This is example is too small to create commons chunks
-                    },
+                    // commons: {
+                    //     chunks: "initial",
+                    //     minChunks: 2,
+                    //     maxInitialRequests: 5, // The default limit is too small to showcase the effect
+                    //     minSize: 0 // This is example is too small to create commons chunks
+                    // },
                     vendor: {
                         test: (module) => {
                             if (module.resource && (/^.*\.(css|scss|sass)$/).test(module.resource)) {
@@ -166,22 +154,19 @@ module.exports = (env) => {
                     }
                 }
             },
-            // minimizer: [
-            //     isDevBuild ? null : new UglifyJSPlugin({
-            //         uglifyOptions: {
-            //             beautify: false,
-            //             compress: true,
-            //             comments: false,
-            //             mangle: false,
-            //             toplevel: false,
-            //             keep_classnames: true, // <-- doesn't exist, I guess. It's in harmony branch
-            //             keep_fnames: true //
-            //         }
-            //     })
-            // ]
+            minimizer: [].concat(isDevBuild ? [] : [
+                new TerserPlugin(),
+                new OptimizeCSSAssetsPlugin({})
+            ])
         },
         plugins: [
-                vendorsExtractPlugin,
+                new webpack.HotModuleReplacementPlugin(),
+                new MiniCssExtractPlugin({
+                    // Options similar to the same options in webpackOptions.output
+                    // both options are optional
+                    filename: '[name].css',
+                    chunkFilename: '[id].css',
+                }),
                 new WriteFilePlugin(),
                 // new webpack.NoEmitOnErrorsPlugin(),
                 // new CleanWebpackPlugin(['*'], {
@@ -191,22 +176,18 @@ module.exports = (env) => {
                 //     dry: false
                 // }),
                 new HtmlWebpackPlugin({
-                    filename: path.resolve(".", 'dist/index.html'),
-                    template: path.resolve(".", 'index.html'),
+                    filename: path.resolve(".", `${output}/index.html`),
+                    template: path.resolve("./", 'index.html'),
                     inject: true,
+                    // chunks: ['initial', 'index', 'vendor'],
                     cache: false
                 }),
-                // new MiniCssExtractPlugin({
-                //     filename: "[name]-[hash].css",
-                //     chunkFilename: '[name]-[hash].css'
-                // }),
                 new webpack.optimize.OccurrenceOrderPlugin(),
                 new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
                 new webpack.DefinePlugin({
                     'process.env.NODE_ENV': isDevBuild ? '"development"' : '"production"'
                 })
             ]
-            .concat(isHot ? [new webpack.HotModuleReplacementPlugin()] : [])
             .concat(isBundle ? [new BundleAnalyzerPlugin({
                 analyzerMode: "static"
             })] : [])

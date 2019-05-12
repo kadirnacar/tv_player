@@ -2,7 +2,7 @@ import { addTask } from 'domain-task';
 import { Action, Reducer } from 'redux';
 import config from '../config';
 import { AppThunkAction } from '../store';
-import { fetchReq } from '../Utils';
+import { fetchReq } from '../utils';
 
 export interface ChannelState {
     isLoading: boolean;

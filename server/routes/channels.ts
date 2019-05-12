@@ -1,6 +1,12 @@
-import { Request, Response, Router } from 'express';
+import {
+    Request,
+    Response,
+    Router
+} from 'express';
 import * as fs from 'fs';
-import { JSDOM } from 'jsdom';
+import {
+    JSDOM
+} from 'jsdom';
 import * as path from 'path';
 import * as lowdb from 'lowdb';
 import * as FileAsync from "lowdb/adapters/FileAsync";
@@ -53,7 +59,9 @@ export class ChannelsRouter {
 
     public async videoFile(req, res, next) {
         const id = req.params.id;
-        const dataFileInfo = await this.db.get('Files').filter({ id: id }).value();
+        const dataFileInfo = await this.db.get('Files').filter({
+            id: id
+        }).value();
 
         if (dataFileInfo == null || dataFileInfo.length == 0) {
             res.status(200).send("Video not found.");
@@ -75,34 +83,38 @@ export class ChannelsRouter {
         })
     }
     public async getUrl(element) {
-        var url;
-        return new Promise(async (resolve, reject) => {
-            var result = JSDOM.fromURL(element.pageUrl, {
-                resources: "usable"
-            });
-            result.then(data => {
-                var c = false;
-                if (element.iframe == true) {
-                    const iframe = data["window"].document.querySelector("iframe");
-                    iframe.addEventListener('load', (a) => {
+        try {
+            var url;
+            return new Promise(async (resolve, reject) => {
+                var result = JSDOM.fromURL(element.pageUrl, {
+                    resources: "usable"
+                });
+                result.then(data => {
+                    var c = false;
+                    if (element.iframe == true) {
+                        const iframe = data["window"].document.querySelector("iframe");
+                        iframe.addEventListener('load', (a) => {
+                            var re = new RegExp(element.urlRegex, "gi");
+                            var frameContent = a.target["contentDocument"].body.innerHTML;
+                            url = frameContent.match(re);
+                            if (url)
+                                element.url = url[0];
+                            c = true;
+                            resolve();
+                        })
+                    } else {
+                        var content = data["window"].document.body.innerHTML;
                         var re = new RegExp(element.urlRegex, "gi");
-                        var frameContent = a.target["contentDocument"].body.innerHTML;
-                        url = frameContent.match(re);
+                        url = content.match(re);
                         if (url)
                             element.url = url[0];
-                        c = true;
                         resolve();
-                    })
-                } else {
-                    var content = data["window"].document.body.innerHTML;
-                    var re = new RegExp(element.urlRegex, "gi");
-                    url = content.match(re);
-                    if (url)
-                        element.url = url[0];
-                    resolve();
-                }
-            })
-        });
+                    }
+                })
+            });
+        } catch (ex) {
+            console.log(ex)
+        }
         // return JSDOM.fromURL(element.pageUrl, {
         //     resources: "usable"
         // }).then(data => {
@@ -124,43 +136,63 @@ export class ChannelsRouter {
         // })
     }
     public async read(req, res, next) {
-        const data = await this.db.get('Channels').value();
-        await new Promise(async (resolve) => {
-            for (var i = 0; i < data.length; i++) {
-                var element = data[i];
-                if (element.type == 3) {
-                    var d = await this.getUrl(element);
-                    console.log(d);
-                }
-            }
-
-            resolve();
-        })
-        await this.saveFile(this.filePath, JSON.stringify({ Channels: data }));
-
-        const data2 = await this.readFile(this.filePath);
-        res.status(200).send(JSON.stringify({ Channels: data }));
-    }
-    public async readUrl(req, res, next) {
-        const name = req.params["name"];
-        const data = await this.db.get('Channels').value();
-        await new Promise(async (resolve) => {
-            for (var i = 0; i < data.length; i++) {
-                var element = data[i];
-                if (element.name == name) {
+        try {
+            const data = await this.db.get('Channels').value();
+            await new Promise(async (resolve) => {
+                for (var i = 0; i < data.length; i++) {
+                    var element = data[i];
                     if (element.type == 3) {
                         var d = await this.getUrl(element);
                         console.log(d);
                     }
                 }
-            }
 
-            resolve();
-        })
-        await this.saveFile(this.filePath, JSON.stringify({ Channels: data }));
+                resolve();
+            })
+            await this.saveFile(this.filePath, JSON.stringify({
+                Channels: data
+            }));
 
-        const data2 = await this.readFile(this.filePath);
-        res.status(200).send(JSON.stringify({ Channels: data }));
+            const data2 = await this.readFile(this.filePath);
+            res.status(200).send(JSON.stringify({
+                Channels: data
+            }));
+        } catch (ex) {
+            next();
+        }
+    }
+    public async readUrl(req, res, next) {
+        try {
+            const name = req.params["name"];
+            const data = await this.db.get('Channels').value();
+            await new Promise(async (resolve, reject) => {
+                try {
+                    for (var i = 0; i < data.length; i++) {
+                        var element = data[i];
+                        if (element.name == name) {
+                            if (element.type == 3) {
+                                var d = await this.getUrl(element);
+                                console.log(d);
+                            }
+                        }
+                    }
+
+                    resolve();
+                } catch {
+                    reject();
+                }
+            })
+            await this.saveFile(this.filePath, JSON.stringify({
+                Channels: data
+            }));
+
+            const data2 = await this.readFile(this.filePath);
+            res.status(200).send(JSON.stringify({
+                Channels: data
+            }));
+        } catch (ex) {
+            next()
+        }
     }
 
     async init() {
