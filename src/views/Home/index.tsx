@@ -98,7 +98,7 @@ class Home extends React.Component<any, any>{
     }
 
     render() {
-        return <Container fluid tabIndex={0}>
+        return <Container fluid tabIndex={0} style={{ outline: "0 !important" }}>
             <CNavbar />
             <div className="clearfix dd" style={{ padding: '.5rem' }}></div>
 
