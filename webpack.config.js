@@ -13,15 +13,16 @@ module.exports = (env, cnf) => {
     const isBundle = env && env.bundle;
     const output = isDevBuild ? 'dist' : 'prod';
     const config = {
-        devServer: {
-            host: 'localhost',
-            port: 3012,
-            hot: true,
-            inline: true,
-            publicPath: "/",
-            historyApiFallback: true,
-            contentBase: path.resolve(__dirname, output)
-        },
+        // devServer: {
+        //     host: 'localhost',
+        //     port: 3012,
+        //     hot: true,
+        //     inline: true,
+        //     publicPath: "/",
+        //     historyApiFallback: true,
+        //     contentBase: path.resolve(__dirname, output)
+        // },
+        target: 'electron-renderer',
         devtool: isDevBuild ? 'source-map' : 'hidden-source-map',
         mode: isDevBuild ? 'development' : 'production',
         // stats: {
@@ -34,7 +35,8 @@ module.exports = (env, cnf) => {
             }
         },
         entry: {
-            'index': ['./src/index.tsx']
+            'index': ['./src/index.tsx'],
+            'electron': ['./electron-app.ts']
         },
         module: {
             rules: [{
