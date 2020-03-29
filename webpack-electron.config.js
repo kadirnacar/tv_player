@@ -35,7 +35,7 @@ module.exports = (env, cnf) => {
             }
         },
         entry: {
-            'index': ['./src/index.tsx'],
+            'electron': ['./src/electron-app.ts'],
         },
         module: {
             rules: [{
@@ -129,7 +129,7 @@ module.exports = (env, cnf) => {
         output: {
             path: path.join(__dirname, output),
             publicPath: "/",
-            filename: 'js/[name].js',
+            filename: '[name].js',
             hotUpdateChunkFilename: 'hot/[id].[hash].hot-update.js',
             hotUpdateMainFilename: 'hot/[hash].hot-update.json'
         },
@@ -162,38 +162,7 @@ module.exports = (env, cnf) => {
             ])
         },
         plugins: [
-                new webpack.HotModuleReplacementPlugin(),
-                new MiniCssExtractPlugin({
-                    // Options similar to the same options in webpackOptions.output
-                    // both options are optional
-                    filename: '[name].css',
-                    chunkFilename: '[id].css',
-                }),
-                new WriteFilePlugin(),
-                // new webpack.NoEmitOnErrorsPlugin(),
-                // new CleanWebpackPlugin(['*'], {
-                //     root: path.resolve(".", "dist"),
-                //     exclude: ['main.js'],
-                //     verbose: true,
-                //     dry: false
-                // }),
-                new HtmlWebpackPlugin({
-                    filename: path.resolve(".", `${output}/index.html`),
-                    template: path.resolve("./public", 'index.html'),
-                    title: "Tv Player",
-                    inject: true,
-                    chunks: ['initial', 'index', 'vendor'],
-                    cache: false
-                }),
-                new CopyWebpackPlugin([{
-                    from: 'public/favicon.ico',
-                    to: './'
-                }, {
-                    from: 'public/assets',
-                    to: 'assets'
-                }], {
-                    copyUnmodified: true
-                }),
+                
                 new webpack.optimize.OccurrenceOrderPlugin(),
                 new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
                 new webpack.DefinePlugin({
