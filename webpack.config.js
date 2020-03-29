@@ -11,7 +11,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 module.exports = (env, cnf) => {
     const isDevBuild = !(env && env.prod);
     const isBundle = env && env.bundle;
-    const output = isDevBuild ? 'dist2' : 'prod';
+    const output = isDevBuild ? 'dist' : 'prod';
     const config = {
         // devServer: {
         //     host: 'localhost',
@@ -36,6 +36,10 @@ module.exports = (env, cnf) => {
         },
         entry: {
             'index': ['./src/index.tsx'],
+        },
+        node: {
+            __dirname: false,
+            __filename: false
         },
         module: {
             rules: [{
@@ -128,7 +132,7 @@ module.exports = (env, cnf) => {
         },
         output: {
             path: path.join(__dirname, output),
-            publicPath: "/",
+            publicPath: "./",
             filename: 'js/[name].js',
             hotUpdateChunkFilename: 'hot/[id].[hash].hot-update.js',
             hotUpdateMainFilename: 'hot/[hash].hot-update.json'

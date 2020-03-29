@@ -4,9 +4,9 @@
   "description": "",
   "scripts": {
     "prod": "webpack --config webpack.config.js --profile --env.prod --display-error-details",
-    "build": "webpack --config webpack.config.js --profile  --display-error-details",
-    "build-electron": "webpack --config webpack-electron.config.js --profile  --display-error-details",
-    "electron": "electron ./dist2/electron.js",
+    "build": "webpack --config webpack.config.js --watch --profile  --display-error-details",
+    "build-electron": "webpack --config webpack-electron.config.js --profile --watch --display-error-details",
+    "electron": "electron ./dist/electron.js",
     "watch": "webpack-dev-server --config webpack.config.js  --profile --watch --display-error-details"
   },
   "repository": {
@@ -88,6 +88,7 @@
     "webpack-dev-server": "^3.10.3",
     "webpack-hot-middleware": "^2.25.0",
     "webpack-merge": "^4.2.2",
+    "webpack-target-electron-renderer": "^0.4.0",
     "write-file-webpack-plugin": "^4.5.1"
   }
 }
