@@ -1,20 +1,21 @@
 /**
  * Entry point of the Election app.
  */
-import { app, BrowserWindow, protocol } from 'electron';
+import { Route, ChannelsRouter } from '@electron';
+import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
 let mainWindow: Electron.BrowserWindow | null;
 app.allowRendererProcessReuse = false;
-protocol.registerSchemesAsPrivileged([{ scheme: "demo", privileges: { supportFetchAPI: true, allowServiceWorkers: true, standard: true, bypassCSP: true, corsEnabled: true } }])
+
+const route = new Route();
+
+route.use("/api/channels2", ChannelsRouter);
+route.use("/api/channels", ChannelsRouter);
+
 const createWindow = () => {
-    protocol.registerStringProtocol("demo", (req, cb) => {
-        console.log(req)
-        console.log(req.uploadData[0].bytes.toLocaleString());
-        cb("ddds");
-    })
-    
+
     // Create the browser window.
     mainWindow = new BrowserWindow({
         height: 600,

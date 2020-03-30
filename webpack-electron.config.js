@@ -26,21 +26,21 @@ module.exports = (env, cnf) => {
         target: 'electron-main',
         devtool: isDevBuild ? 'source-map' : 'hidden-source-map',
         mode: isDevBuild ? 'development' : 'production',
-        // stats: {
-        //     modules: false
-        // },
         node: {
             __dirname: false,
             __filename: false
         },
+        externals: {
+            canvas: "commonjs canvas" // Important (2)
+        },
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
             alias: {
-
+                "@electron": path.resolve(__dirname, "src/electron"),
             }
         },
         entry: {
-            'electron': ['./src/electron.ts'],
+            'electron': ['./src/electronApp.ts'],
         },
         module: {
             rules: [{
@@ -139,28 +139,28 @@ module.exports = (env, cnf) => {
             hotUpdateMainFilename: 'hot/[hash].hot-update.json'
         },
         optimization: {
-            splitChunks: {
-                cacheGroups: {
-                    // commons: {
-                    //     chunks: "initial",
-                    //     minChunks: 2,
-                    //     maxInitialRequests: 5, // The default limit is too small to showcase the effect
-                    //     minSize: 0 // This is example is too small to create commons chunks
-                    // },
-                    vendor: {
-                        test: (module) => {
-                            if (module.resource && (/^.*\.(css|scss|sass)$/).test(module.resource)) {
-                                return false;
-                            }
-                            return module.context && module.context.indexOf("node_modules") !== -1;
-                        },
-                        chunks: "initial",
-                        name: "vendor",
-                        priority: 10,
-                        enforce: true
-                    }
-                }
-            },
+            // splitChunks: {
+            //     cacheGroups: {
+            //         // commons: {
+            //         //     chunks: "initial",
+            //         //     minChunks: 2,
+            //         //     maxInitialRequests: 5, // The default limit is too small to showcase the effect
+            //         //     minSize: 0 // This is example is too small to create commons chunks
+            //         // },
+            //         vendor: {
+            //             test: (module) => {
+            //                 if (module.resource && (/^.*\.(css|scss|sass)$/).test(module.resource)) {
+            //                     return false;
+            //                 }
+            //                 return module.context && module.context.indexOf("node_modules") !== -1;
+            //             },
+            //             chunks: "initial",
+            //             name: "vendor",
+            //             priority: 10,
+            //             enforce: true
+            //         }
+            //     }
+            // },
             minimizer: [].concat(isDevBuild ? [] : [
                 new TerserPlugin(),
                 new OptimizeCSSAssetsPlugin({})
@@ -168,33 +168,33 @@ module.exports = (env, cnf) => {
         },
         plugins: [
 
-                // new webpack.optimize.OccurrenceOrderPlugin(),
-                // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-                // new webpack.DefinePlugin({
-                //     'process.env.NODE_ENV': isDevBuild ? '"development"' : '"production"'
-                // })
-            ]
-            // .concat(isHot ? [new webpack.HotModuleReplacementPlugin()] : [])
-            // .concat(isBundle ? [new BundleAnalyzerPlugin({
-            //     analyzerMode: "static"
-            // })] : [])
-            // .concat(isDevBuild ? [
-            //     new webpack.LoaderOptionsPlugin({
-            //         debug: true,
-            //         options: {
-            //             debug: true,
-            //             cache: true
-            //         }
-            //     })
-            // ] : [
-            //     new webpack.LoaderOptionsPlugin({
-            //         debug: false,
-            //         options: {
-            //             debug: false,
-            //             cache: true
-            //         }
-            //     })
-            // ])
+            // new webpack.optimize.OccurrenceOrderPlugin(),
+            // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+            // new webpack.DefinePlugin({
+            //     'process.env.NODE_ENV': isDevBuild ? '"development"' : '"production"'
+            // })
+        ]
+        // .concat(isHot ? [new webpack.HotModuleReplacementPlugin()] : [])
+        // .concat(isBundle ? [new BundleAnalyzerPlugin({
+        //     analyzerMode: "static"
+        // })] : [])
+        // .concat(isDevBuild ? [
+        //     new webpack.LoaderOptionsPlugin({
+        //         debug: true,
+        //         options: {
+        //             debug: true,
+        //             cache: true
+        //         }
+        //     })
+        // ] : [
+        //     new webpack.LoaderOptionsPlugin({
+        //         debug: false,
+        //         options: {
+        //             debug: false,
+        //             cache: true
+        //         }
+        //     })
+        // ])
     };
 
     // config.target = webpackTargetElectronRenderer(config);
