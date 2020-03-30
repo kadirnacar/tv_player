@@ -6,7 +6,7 @@ export class Router {
     }
     routers: { [path: string]: { parser: RouteParser } };
 
-    callback()
+    callback(){}
 
     get(path: string, callback) {
 
