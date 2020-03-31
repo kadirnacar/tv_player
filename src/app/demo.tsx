@@ -3,11 +3,10 @@ import axios from "axios"
 
 export default class Demo extends React.Component<any, any>{
     handleClick() {
-        console.log("ok");
-        fetch('electron://command/api/channels/me/den?dd=rt&dd=98', {
+        fetch('electron://command/api/channels/me/45/yg/ffd?ff=2&tt=ık', {
             method: 'POST',
             body: JSON.stringify({
-                name: 'Jimmy'
+                name: 'Jimmyıçşğ'
             })
         })
     
@@ -16,7 +15,7 @@ export default class Demo extends React.Component<any, any>{
     }
     render() {
         return <div>
-            <button onClick={this.handleClick.bind(this)}>tıkla</button>
+            <button onClick={this.handleClick.bind(this)}>tıkhhhla</button>
         </div>
     }
 }

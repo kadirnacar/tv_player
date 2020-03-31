@@ -32,6 +32,7 @@ module.exports = (env, cnf) => {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
             alias: {
                 "@app": path.resolve(__dirname, "src/app"),
+                "@tools": path.resolve(__dirname, "src/tools"),
             }
         },
         entry: {

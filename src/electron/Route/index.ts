@@ -2,6 +2,7 @@ import { app, protocol } from 'electron';
 import { Router } from './Router';
 import RouteParser from 'route-parser';
 import url from 'url';
+import { createStream } from '@tools';
 export { Router } from './Router';
 
 export class Route {
@@ -9,25 +10,19 @@ export class Route {
         this.routers = {};
         protocol.registerSchemesAsPrivileged([{ scheme: scheme, privileges: { supportFetchAPI: true, allowServiceWorkers: true, standard: true, bypassCSP: true, corsEnabled: true } }])
         app.on("ready", () => {
-            protocol.registerStringProtocol(scheme, (req, cb) => {
-                const urlParser = url.parse(req.url);
+            protocol.registerStreamProtocol(scheme, (req, cb) => {
+                const urlParser = url.parse(req.url, true);
                 const routes = Object.keys(this.routers);
                 let match: any;
                 for (var i = 0; i < routes.length; i++) {
                     match = this.routers[routes[i]].parser.match(urlParser.path);
-                    console.log(routes[i], match, urlParser.query, req)
                     if (match) {
-
-                        break;
+                        this.routers[routes[i]].router.callback(match, urlParser, req, cb);
+                        return;
                     }
                 }
-                // const parser = new Route("deneme(/*a)");
-                // const parser2 = new Route("/deneme(/*a)");
-                // const urlParser = url.parse(req.url);
-                // const d = parser.match(urlParser.path);
-                // const d2 = parser2.match(urlParser.path);
-                // console.log(d, d2, urlParser);
-                cb("ddds");
+                cb({ statusCode: 404, headers: { 'content-type': 'text/html' }, data: createStream(`${req.method} ${urlParser.pathname} not found!`) })
+                // cb(`${req.method} ${urlParser.pathname} not found!`);
             })
         });
     }

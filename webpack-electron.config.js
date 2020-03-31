@@ -8,6 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = (env, cnf) => {
     const isDevBuild = !(env && env.prod);
@@ -30,13 +31,12 @@ module.exports = (env, cnf) => {
             __dirname: false,
             __filename: false
         },
-        externals: {
-            canvas: "commonjs canvas" // Important (2)
-        },
+        externals: [nodeExternals()],
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
             alias: {
                 "@electron": path.resolve(__dirname, "src/electron"),
+                "@tools": path.resolve(__dirname, "src/tools"),
             }
         },
         entry: {

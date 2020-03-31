@@ -25,6 +25,7 @@
     "paths": {
       "@electron": ["./src/electron"],
       "@app": ["./src/app"],
+      "@tools": ["./src/tools"],
       // "@models": ["./src/models"],
       // "@reducers": ["./src/reducers"],
       // "@services": ["./src/services"],

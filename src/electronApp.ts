@@ -5,28 +5,53 @@ import { Route, ChannelsRouter } from '@electron';
 import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import installExtension, { REACT_DEVELOPER_TOOLS,REDUX_DEVTOOLS } from 'electron-devtools-installer';
 
 let mainWindow: Electron.BrowserWindow | null;
 app.allowRendererProcessReuse = false;
 
 const route = new Route();
 
-route.use("/api/channels2", ChannelsRouter);
 route.use("/api/channels", ChannelsRouter);
+route.use("/api/channels2", ChannelsRouter);
 
-const createWindow = () => {
+const installExtensions = async () => {
+    // const installer = require('electron-devtools-installer');
+    const forceDownload = !!process.env.UPGRADE_EXTENSIONS
+    const extensions = [
+        REACT_DEVELOPER_TOOLS,
+        REDUX_DEVTOOLS
+    ]
+    return Promise
+        .all(extensions.map(name => installExtension(name, forceDownload)))
+        .catch(console.log)
+}
+
+const createWindow = async () => {
 
     // Create the browser window.
     mainWindow = new BrowserWindow({
         height: 600,
         width: 800,
         webPreferences: {
-            webSecurity: false,
-            devTools: process.env.NODE_ENV === 'production' ? false : true
+            nodeIntegration: false,
+            devTools: process.env.NODE_ENV === 'production' ? false : true,
         }
     });
+    const env = process.env.NODE_ENV;
 
+    if (env == "development") {
 
+        mainWindow.maximize();
+        mainWindow.setFullScreen(true);
+        await installExtensions();
+        mainWindow.webContents.openDevTools();
+        mainWindow.webContents.on('devtools-opened', () => {
+            setImmediate(() => {
+                mainWindow.focus();
+            });
+        });
+    }
     // and load the index.html of the app.
     mainWindow.loadURL(
         url.format({
@@ -36,7 +61,8 @@ const createWindow = () => {
         })
     );
 
-    // Emitted when the window is closed.
+
+
     mainWindow.on('closed', () => {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
