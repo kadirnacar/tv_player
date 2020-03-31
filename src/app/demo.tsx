@@ -3,11 +3,11 @@ import axios from "axios"
 
 export default class Demo extends React.Component<any, any>{
     handleClick() {
-        fetch('electron://command/api/channels/me/45/yg/ffd?ff=2&tt=ık', {
-            method: 'POST',
-            body: JSON.stringify({
-                name: 'Jimmyıçşğ'
-            })
+        fetch('electron://command/api/channels/list', {
+            method: 'GET',
+            // body: JSON.stringify({
+            //     name: 'Jimmyıçşğ'
+            // })
         })
     
 

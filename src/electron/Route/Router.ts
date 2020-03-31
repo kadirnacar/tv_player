@@ -22,6 +22,7 @@ export class Router {
         const data = req.uploadData && req.uploadData.length > 0 ? JSON.parse(req.uploadData[0].bytes.toString("utf-8")) : null;
         for (var i = 0; i < routes.length; i++) {
             if (this.routers[req.method] && this.routers[req.method][routes[i]]) {
+
                 matchChild = this.routers[req.method][routes[i]].parser.match(`/${match.others}`);
                 if (matchChild) {
                     try {

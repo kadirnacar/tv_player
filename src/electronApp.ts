@@ -13,7 +13,6 @@ app.allowRendererProcessReuse = false;
 const route = new Route();
 
 route.use("/api/channels", ChannelsRouter);
-route.use("/api/channels2", ChannelsRouter);
 
 const installExtensions = async () => {
     // const installer = require('electron-devtools-installer');
