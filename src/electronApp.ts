@@ -1,7 +1,7 @@
 /**
  * Entry point of the Election app.
  */
-import { Route, ChannelsRouter } from '@electron';
+import { Route, ChannelsRouter } from '@electronApp';
 import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';

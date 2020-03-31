@@ -33,19 +33,31 @@ module.exports = (env, cnf) => {
             alias: {
                 "@app": path.resolve(__dirname, "src/app"),
                 "@tools": path.resolve(__dirname, "src/tools"),
+                "@components": path.resolve(__dirname, "src/app/components"),
+                "@containers": path.resolve(__dirname, "src/app/containers"),
+                "@models": path.resolve(__dirname, "src/app/models"),
+                "@reducers": path.resolve(__dirname, "src/app/reducers"),
+                "@services": path.resolve(__dirname, "src/app/services"),
+                "@store": path.resolve(__dirname, "src/app/store"),
+                "@views": path.resolve(__dirname, "src/app/views"),
+                "@utils": path.resolve(__dirname, 'src/app/utils'),
+                "@config": path.resolve(__dirname, 'src/app/config'),
+                "@routes": path.resolve(__dirname, 'src/app/routes'),
+                "@Ui": path.resolve(__dirname, 'src/app/Ui'),
+                'react-dom': isDevBuild ? '@hot-loader/react-dom' : 'react-dom'
             }
         },
         entry: {
-            'index': ['./src/index.tsx'],
+            'index': ['./src/app/index.tsx'],
         },
-        node: {
-            __dirname: false,
-            __filename: false
-        },
+        // node: {
+        //     __dirname: false,
+        //     __filename: false
+        // },
         module: {
             rules: [{
                     test: /\.tsx?$/,
-                    include: [/src/],
+                    include: [/src\/app/],
                     use: [{
                         loader: 'awesome-typescript-loader',
                         options: {
@@ -167,7 +179,7 @@ module.exports = (env, cnf) => {
             ])
         },
         plugins: [
-                new webpack.HotModuleReplacementPlugin(),
+                // new webpack.HotModuleReplacementPlugin(),
                 new MiniCssExtractPlugin({
                     // Options similar to the same options in webpackOptions.output
                     // both options are optional

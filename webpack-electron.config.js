@@ -35,7 +35,7 @@ module.exports = (env, cnf) => {
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
             alias: {
-                "@electron": path.resolve(__dirname, "src/electron"),
+                "@electronApp": path.resolve(__dirname, "src/electron"),
                 "@tools": path.resolve(__dirname, "src/tools"),
             }
         },
