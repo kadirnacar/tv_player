@@ -15,7 +15,7 @@ export class ChannelsRouter {
     filePath;
     constructor() {
         this.router = new Router();
-        this.filePath = path.resolve(__dirname, "../db.json");
+        this.filePath = path.resolve(__dirname, "db.json");
         this.init();
     }
     public async getList(ev: ICallback) {

@@ -9,6 +9,7 @@
     "build-electron": "webpack --config webpack-electron.config.js --profile --watch --display-error-details",
     "electron": "cross-env NODE_ENV=dev nodemon --exec \"electron ./dist/electron.js\"",
     "electron1": "electron ./dist/electron.js",
+    "electron-prod": "electron ./prod/index.js",
     "package": "electron-packager ./prod",
     "watch": "webpack-dev-server --config webpack.config.js  --profile --watch --display-error-details"
   },
@@ -22,6 +23,17 @@
     "url": "https://github.com/kadirnacar/tv_player/issues"
   },
   "homepage": "https://github.com/kadirnacar/tv_player#readme",
+  "peerDependencies": {
+    "canvas": "^2.5.0"
+  },
+  "peerDependenciesMeta": {
+    "canvas": {
+      "optional": true
+    }
+  },
+  "browser": {
+    "canvas": false
+  },
   "dependencies": {
     "@date-io/moment": "2.5.0",
     "@hot-loader/react-dom": "^16.13.0",
@@ -31,6 +43,7 @@
     "@material-ui/styles": "^4.9.6",
     "axios": "^0.19.2",
     "babel-loader": "^8.1.0",
+    "canvas": "2.5.0",
     "cross-env": "^7.0.2",
     "font-awesome": "^4.7.0",
     "global": "^4.4.0",
