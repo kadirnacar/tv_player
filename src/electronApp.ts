@@ -5,7 +5,7 @@ import { Route, ChannelsRouter } from '@electronApp';
 import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
-import installExtension, { REACT_DEVELOPER_TOOLS,REDUX_DEVTOOLS } from 'electron-devtools-installer';
+// import installExtension, { REACT_DEVELOPER_TOOLS,REDUX_DEVTOOLS } from 'electron-devtools-installer';
 
 let mainWindow: Electron.BrowserWindow | null;
 app.allowRendererProcessReuse = false;
@@ -15,15 +15,15 @@ const route = new Route();
 route.use("/api/channels", ChannelsRouter);
 
 const installExtensions = async () => {
-    // const installer = require('electron-devtools-installer');
-    const forceDownload = !!process.env.UPGRADE_EXTENSIONS
-    const extensions = [
-        REACT_DEVELOPER_TOOLS,
-        REDUX_DEVTOOLS
-    ]
-    return Promise
-        .all(extensions.map(name => installExtension(name, forceDownload)))
-        .catch(console.log)
+    // // const installer = require('electron-devtools-installer');
+    // const forceDownload = !!process.env.UPGRADE_EXTENSIONS
+    // const extensions = [
+    //     REACT_DEVELOPER_TOOLS,
+    //     REDUX_DEVTOOLS
+    // ]
+    // return Promise
+    //     .all(extensions.map(name => installExtension(name, forceDownload)))
+    //     .catch(console.log)
 }
 
 const createWindow = async () => {

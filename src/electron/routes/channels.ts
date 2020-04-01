@@ -132,12 +132,8 @@ export class ChannelsRouter {
                 Channels: data
             }));
 
-            const data2 = await this.readFile(this.filePath);
-            ev.cb({
-                statusCode: 200, data: createStream(JSON.stringify({
-                    Channels: data
-                }))
-            });
+            const channels = await this.db.get('Channels').value();
+            ev.cb({ statusCode: 200, data: createStream(JSON.stringify(channels)) });
 
         } catch (ex) {
             ev.cb({
@@ -147,7 +143,7 @@ export class ChannelsRouter {
             });
         }
     }
-    public async readUrl(ev:ICallback) {
+    public async readUrl(ev: ICallback) {
         try {
             const name = ev.params["name"];
             const data = await this.db.get('Channels').value();
@@ -168,16 +164,21 @@ export class ChannelsRouter {
                     reject();
                 }
             })
-            await this.saveFile(this.filePath, JSON.stringify({
-                Channels: data
-            }));
-
-            const data2 = await this.readFile(this.filePath);
-            ev.cb({
-                statusCode: 200, data: createStream(JSON.stringify({
+            try {
+                await this.saveFile(this.filePath, JSON.stringify({
                     Channels: data
-                }))
-            });
+                }));
+            } catch (err) {
+                console.log(err)
+            }
+            const channels = await this.db.get('Channels').value();
+            ev.cb({ statusCode: 200, data: createStream(JSON.stringify(channels)) });
+            // const data2 = await this.readFile(this.filePath);
+            // ev.cb({
+            //     statusCode: 200, data: createStream(JSON.stringify({
+            //         Channels: data
+            //     }))
+            // });
         } catch (ex) {
             ev.cb({
                 statusCode: 500, data: createStream(JSON.stringify({

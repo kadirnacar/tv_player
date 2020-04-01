@@ -15,6 +15,16 @@ export const ChannelActions = {
         });
         return result;
     },
+    refreshUrl: (name: string) => async (dispatch, getState: () => ApplicationState) => {
+        let result: Result<IChannel[]>;
+        await batch(async () => {
+            await dispatch({ type: Actions.RequestRefreshUrl });
+            result = await ChannelService.refreshUrl(name);
+            await dispatch({ type: Actions.ReceiveRefreshUrl, payload: result.value });
+
+        });
+        return result;
+    },
     setCurrent: (channel: IChannel) => async (dispatch, getState: () => ApplicationState) => {
         await batch(async () => {
             await dispatch({ type: Actions.SetCurrentData, payload: channel });

@@ -3,3 +3,5 @@ dist
 dist2
 yarn.lock
 .DS_Store
+prod
+*-darwin-x64

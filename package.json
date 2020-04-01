@@ -5,8 +5,11 @@
   "scripts": {
     "prod": "webpack --config webpack.config.js --profile --env.prod --display-error-details",
     "build": "webpack --config webpack.config.js --watch --profile  --display-error-details",
+    "prod-electron": "webpack --config webpack-electron.config.js  --env.prod --profile --display-error-details",
     "build-electron": "webpack --config webpack-electron.config.js --profile --watch --display-error-details",
     "electron": "cross-env NODE_ENV=dev nodemon --exec \"electron ./dist/electron.js\"",
+    "electron1": "electron ./dist/electron.js",
+    "package": "electron-packager ./prod",
     "watch": "webpack-dev-server --config webpack.config.js  --profile --watch --display-error-details"
   },
   "repository": {
@@ -85,6 +88,7 @@
     "css-modules-typescript-loader": "^4.0.0",
     "electron": "^8.2.0",
     "electron-devtools-installer": "^2.2.3",
+    "electron-packager": "^14.2.1",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.0.3",
     "mini-css-extract-plugin": "^0.9.0",

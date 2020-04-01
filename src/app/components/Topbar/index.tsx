@@ -45,7 +45,7 @@ class TopbarComponent extends React.Component<Props, any> {
             onMouseEnter={this.props.onOpenMenu}>
             <Menu />
           </IconButton>
-          <Typography variant="h6" noWrap style={{ flexGrow: 1 }}>TV</Typography>
+          <Typography variant="h6" noWrap style={{ flexGrow: 1 }}>TV - {this.props.Channel.CurrentItem ? this.props.Channel.CurrentItem.name : ""}</Typography>
         </Toolbar>
       </AppBar>
     );

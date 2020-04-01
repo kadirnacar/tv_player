@@ -4,6 +4,8 @@ import { BaseState } from '@reducers';
 export enum Actions {
     RequestListData = "REQUEST_LIST_CHANNEL",
     ReceiveListData = "RECEIVE_LIST_CHANNEL",
+    RequestRefreshUrl = "REQUEST_REFRESH_URL",
+    ReceiveRefreshUrl = "RECEIVE_REFRESH_URL",
     SetCurrentData = "SET_CURRENT_DATA",
 }
 
@@ -25,5 +27,15 @@ export interface IRequestListDataAction {
 
 export interface IReceiveListDataAction {
     type: Actions.ReceiveListData;
+    payload: IChannel[];
+}
+
+
+export interface IRequestRefreshUrlAction {
+    type: Actions.RequestRefreshUrl;
+}
+
+export interface IReceiveRefreshUrlAction {
+    type: Actions.ReceiveRefreshUrl;
     payload: IChannel[];
 }

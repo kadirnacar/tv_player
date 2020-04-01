@@ -28,7 +28,8 @@ export class SidebarComponent extends React.Component<Props, any> {
     super(props);
     this.onSidebarClick = this.onSidebarClick.bind(this);
     this.state = {
-      menu: []
+      menu: [],
+      currentIndex: null
     }
   }
 
@@ -39,16 +40,43 @@ export class SidebarComponent extends React.Component<Props, any> {
   }
   async componentDidMount() {
     await this.props.ChannelActions.getList();
-    let menu = this.props.Channel.List.map(channel => {
+    let menu = this.props.Channel.List.map((channel, index) => {
       return {
         label: channel.name,
         icon: "fa fa-home",
         data: channel,
         command: (event, item) => {
+          this.setState({ currentIndex: index });
           this.props.ChannelActions.setCurrent(channel);
         }
       }
     });
+    window.addEventListener('keydown', (e) => {
+
+      if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+      }
+      // if (!this.props.Data)
+      //     return;
+      var key = e.which;
+      const index = this.state.currentIndex;
+      let ind;
+      console.log(key, index)
+      switch (key) {
+        case 37:
+          ind = (index <= 0 ? this.props.Channel.List.length : index) - 1;
+          this.setState({ currentIndex: ind });
+          this.props.ChannelActions.setCurrent(this.props.Channel.List[ind]);
+          // this.setActive((index <= 0 ? this.props.Data.length : index) - 1);
+          break;
+        case 39:
+          ind = (index >= this.props.Channel.List.length - 1 ? -1 : index) + 1;
+          this.setState({ currentIndex: ind });
+          this.props.ChannelActions.setCurrent(this.props.Channel.List[ind]);
+          // this.setActive((index >= this.props.Data.length - 1 ? -1 : index) + 1);
+          break;
+      }
+    }, false);
     this.setState({ menu });
   }
   render() {

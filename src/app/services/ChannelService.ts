@@ -11,4 +11,11 @@ export class ChannelService extends ServiceBase {
         }, false);
         return result;
     }
+    public static async refreshUrl(name: string): Promise<Result<IChannel[]>> {
+        var result = await this.requestJson<IChannel[]>({
+            url: `${config.restUrl}/api/channels/readurl/${name}`,
+            method: "GET"
+        }, false);
+        return result;
+    }
 }

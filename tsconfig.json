@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "module": "commonjs",
-    "moduleResolution": "node",
+    // "moduleResolution": "node",
     "target": "es6",
     "jsx": "react",
     "emitDecoratorMetadata": false,

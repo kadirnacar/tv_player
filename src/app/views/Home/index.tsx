@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 import { ChannelActions } from "@reducers";
 import { bindActionCreators } from "redux";
 
-
-class Home extends React.Component<ApplicationState, any> {
+type Props = ApplicationState & { ChannelActions: typeof ChannelActions }
+class Home extends React.Component<Props, any> {
   constructor(props) {
     super(props);
     this.videoNode = React.createRef();
@@ -25,10 +25,19 @@ class Home extends React.Component<ApplicationState, any> {
         autoplay: true,
       },
       () => {
-        this.player.on("error", (err) => {
+        this.player.on("error", async (err) => {
           var error = this.player.error();
+          console.log(error, err);
           if (error.code == 4) {
-            // this.refreshAnUrl(this.state.index);
+            this.player.reset();
+            // this.setState({ current: null })
+            await this.props.ChannelActions.refreshUrl(this.props.Channel.CurrentItem.name);
+            if (this.state.current) {
+              const current = this.props.Channel.List.find(i => i.name == this.state.current.name);
+              if (current) {
+                await this.props.ChannelActions.setCurrent(current);
+              }
+            }
           }
         });
       });
@@ -40,7 +49,10 @@ class Home extends React.Component<ApplicationState, any> {
       if (item.eval == true) {
         item.url = eval(item.evalurl);
       }
-      this.player.src(item.url);
+      if (!this.state.current)
+        this.player.src(item.url + "lmlm");
+      else
+        this.player.src(item.url);
       this.setState({ current: item });
     }
   }
@@ -51,7 +63,7 @@ class Home extends React.Component<ApplicationState, any> {
         <div data-vjs-player>
           <video data-setup='{"fluid": true}'
             ref={this.videoNode}
-            className="video-js"
+            className="video-js vjs-16-9 vjs-big-play-centered"
             controls></video>
         </div>
       </div>

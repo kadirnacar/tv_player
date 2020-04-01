@@ -14,6 +14,7 @@ module.exports = (env, cnf) => {
     const isDevBuild = !(env && env.prod);
     const isBundle = env && env.bundle;
     const output = isDevBuild ? 'dist' : 'prod';
+    console.log(nodeExternals());
     const config = {
         // devServer: {
         //     host: 'localhost',
@@ -31,6 +32,9 @@ module.exports = (env, cnf) => {
             __dirname: false,
             __filename: false
         },
+        // externals: {
+        //     canvas: "commonjs canvas" // Important (2)
+        // },
         externals: [nodeExternals()],
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -40,12 +44,12 @@ module.exports = (env, cnf) => {
             }
         },
         entry: {
-            'electron': ['./src/electronApp.ts'],
+            'index': ['./src/electronApp.ts'],
         },
         module: {
             rules: [{
                     test: /\.tsx?$/,
-                    include: [/src/],
+                    // include: [/src/],
                     use: [{
                         loader: 'awesome-typescript-loader',
                         options: {
@@ -59,7 +63,7 @@ module.exports = (env, cnf) => {
                                         "targets": {
                                             "node": "current"
                                         },
-                                        "modules": false
+                                        // "modules": false
                                     }]
                                 ]
                             }
