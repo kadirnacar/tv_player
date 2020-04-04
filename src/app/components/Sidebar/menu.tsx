@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withRouter } from "react-router";
+import { withRouter } from "react-router-dom";
 import AppSubmenu from './subMenu';
 
 class AppMenu extends React.Component<any, any> {

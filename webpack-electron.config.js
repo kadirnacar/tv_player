@@ -33,9 +33,9 @@ module.exports = (env, cnf) => {
         },
         externals: [
             nodeExternals(), 
-            // {
-            //     canvas: "commonjs canvas"
-            // }
+            {
+                canvas: "commonjs canvas"
+            }
         ],
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],

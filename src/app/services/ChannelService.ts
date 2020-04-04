@@ -11,6 +11,16 @@ export class ChannelService extends ServiceBase {
         }, false);
         return result;
     }
+    public static async save(data: IChannel[]): Promise<Result<IChannel[]>> {
+        await fetch(`${config.restUrl}/api/channels/`, { method: "POST", body: JSON.stringify(data) });
+        var result = await this.requestJson<IChannel[]>({
+            url: `${config.restUrl}/api/channels/`,
+
+            method: "POST",
+            data: data
+        }, false);
+        return result;
+    }
     public static async refreshUrl(name: string): Promise<Result<IChannel[]>> {
         var result = await this.requestJson<IChannel[]>({
             url: `${config.restUrl}/api/channels/readurl/${name}`,

@@ -3,8 +3,8 @@ import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import ExitToApp from '@material-ui/icons/ExitToApp';
 import Menu from '@material-ui/icons/Menu';
+import Settings from '@material-ui/icons/Settings';
 import { ApplicationState } from "@store";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -45,7 +45,22 @@ class TopbarComponent extends React.Component<Props, any> {
             onMouseEnter={this.props.onOpenMenu}>
             <Menu />
           </IconButton>
-          <Typography variant="h6" noWrap style={{ flexGrow: 1 }}>TV - {this.props.Channel.CurrentItem ? this.props.Channel.CurrentItem.name : ""}</Typography>
+          <Typography variant="h6" noWrap style={{ flexGrow: 1 }} onClick={() => {
+            this.props.history.push("/");
+          }}>
+            TV - {this.props.Channel.CurrentItem ? this.props.Channel.CurrentItem.name : ""}
+          </Typography>
+          <IconButton
+            aria-label="aAyarlar"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+            onClick={() => {
+              this.props.history.push("/settings")
+            }}
+          >
+            <Settings />
+          </IconButton>
         </Toolbar>
       </AppBar>
     );

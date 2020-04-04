@@ -15,6 +15,16 @@ export const ChannelActions = {
         });
         return result;
     },
+    save: (data: IChannel[]) => async (dispatch, getState: () => ApplicationState) => {
+        let result: Result<IChannel[]>;
+        await batch(async () => {
+            await dispatch({ type: Actions.RequestSaveData });
+            result = await ChannelService.save(data);
+            await dispatch({ type: Actions.ReceiveSaveData, payload: result.value });
+
+        });
+        return result;
+    },
     refreshUrl: (name: string) => async (dispatch, getState: () => ApplicationState) => {
         let result: Result<IChannel[]>;
         await batch(async () => {

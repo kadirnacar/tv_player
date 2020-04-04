@@ -7,7 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
-import { withRouter } from "react-router";
+import { withRouter } from "react-router-dom";
 import AppSubmenu from './subMenu';
 
 class AppSubmenuItem extends React.Component<any, any> {
@@ -49,7 +49,7 @@ class AppSubmenuItem extends React.Component<any, any> {
         const { item } = this.props;
         return (
             <React.Fragment>
-                <ListItem button style={{ paddingLeft: 10 * (this.props.depth || 1) }} onClick={(e) => this.onMenuItemClick(e, item)}>
+                <ListItem button style={{ paddingLeft: 10 * (this.props.depth || 1), overflow: "hidden", width: 240 }} onClick={(e) => this.onMenuItemClick(e, item)}>
                     <ListItemIcon style={{ minWidth: 32 }}>
                         <Icon className={item.icon} color="action" />
                     </ListItemIcon>

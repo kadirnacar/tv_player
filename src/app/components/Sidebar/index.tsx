@@ -7,7 +7,7 @@ import { ApplicationState } from "@store";
 import * as React from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
 import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import AppMenu from "./menu";
 import { ChannelActions } from "@reducers";
 import { bindActionCreators } from "redux";
@@ -51,32 +51,7 @@ export class SidebarComponent extends React.Component<Props, any> {
         }
       }
     });
-    window.addEventListener('keydown', (e) => {
-
-      if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-        e.preventDefault();
-      }
-      // if (!this.props.Data)
-      //     return;
-      var key = e.which;
-      const index = this.state.currentIndex;
-      let ind;
-      console.log(key, index)
-      switch (key) {
-        case 37:
-          ind = (index <= 0 ? this.props.Channel.List.length : index) - 1;
-          this.setState({ currentIndex: ind });
-          this.props.ChannelActions.setCurrent(this.props.Channel.List[ind]);
-          // this.setActive((index <= 0 ? this.props.Data.length : index) - 1);
-          break;
-        case 39:
-          ind = (index >= this.props.Channel.List.length - 1 ? -1 : index) + 1;
-          this.setState({ currentIndex: ind });
-          this.props.ChannelActions.setCurrent(this.props.Channel.List[ind]);
-          // this.setActive((index >= this.props.Data.length - 1 ? -1 : index) + 1);
-          break;
-      }
-    }, false);
+    
     this.setState({ menu });
   }
   render() {

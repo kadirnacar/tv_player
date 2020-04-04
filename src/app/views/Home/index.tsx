@@ -1,9 +1,9 @@
-import * as React from "react";
-import videojs from 'video.js';
-import { ApplicationState } from "@store";
-import { connect } from "react-redux";
 import { ChannelActions } from "@reducers";
+import { ApplicationState } from "@store";
+import * as React from "react";
+import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import videojs from 'video.js';
 
 type Props = ApplicationState & { ChannelActions: typeof ChannelActions }
 class Home extends React.Component<Props, any> {
@@ -11,7 +11,8 @@ class Home extends React.Component<Props, any> {
     super(props);
     this.videoNode = React.createRef();
     this.state = {
-      current: null
+      current: null,
+      currentIndex: -1
     }
   }
 
@@ -41,6 +42,39 @@ class Home extends React.Component<Props, any> {
           }
         });
       });
+    window.addEventListener('keydown', this.windowKeyPress, false);
+  }
+  windowKeyPress = (e) => {
+
+    if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+      e.preventDefault();
+    }
+    var key = e.which;
+    const index = this.state.currentIndex;
+    let ind;
+    const volume = this.player.volume();
+    switch (key) {
+      case 38:
+        if (volume < 1) {
+          this.player.volume(volume + 0.1);
+        }
+        break;
+      case 40:
+        if (volume > 0) {
+          this.player.volume(volume - 0.1);
+        }
+        break;
+      case 37:
+        ind = (index <= 0 ? this.props.Channel.List.length : index) - 1;
+        this.setState({ currentIndex: ind });
+        this.props.ChannelActions.setCurrent(this.props.Channel.List[ind]);
+        break;
+      case 39:
+        ind = (index >= this.props.Channel.List.length - 1 ? -1 : index) + 1;
+        this.setState({ currentIndex: ind });
+        this.props.ChannelActions.setCurrent(this.props.Channel.List[ind]);
+        break;
+    }
   }
 
   componentDidUpdate() {
@@ -49,14 +83,16 @@ class Home extends React.Component<Props, any> {
       if (item.eval == true) {
         item.url = eval(item.evalurl);
       }
-      if (!this.state.current)
-        this.player.src(item.url + "lmlm");
-      else
-        this.player.src(item.url);
+      this.player.src(item.url);
       this.setState({ current: item });
     }
   }
 
+  componentWillUnmount() {
+    if (this.player)
+      this.player.dispose();
+    window.removeEventListener("keydown", this.windowKeyPress, false);
+  }
   render() {
     return (
       <div style={{ width: "100%", height: 500 }}>

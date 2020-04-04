@@ -1,8 +1,8 @@
 import { App } from "@containers";
 import { makeStyles } from '@material-ui/core/styles';
-import { Home } from "@views";
+import { Home, Settings } from "@views";
 import * as React from "react";
-import { Route, Switch } from "react-router";
+import { Route, Switch } from "react-router-dom";
 
 class Routes extends React.Component<any, any>{
     constructor(props) {
@@ -13,7 +13,8 @@ class Routes extends React.Component<any, any>{
             <App>
                 <Route render={(location) => {
                     return <Switch location={location.location}>
-                        <Route path="/" component={Home} />
+                        <Route path="/settings" component={Settings} />
+                        <Route path="/"  component={Home} />
                     </Switch>
                 }} />
 
